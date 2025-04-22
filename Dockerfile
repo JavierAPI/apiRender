@@ -1,33 +1,36 @@
 FROM php:8.2-cli
 
-# Instala dependencias necesarias
+# Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     python3 \
-    python3-pip \
+    python3-venv \
     unzip \
     git \
     zip \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+    curl
 
-# Instala yt-dlp
-RUN pip install yt-dlp
+# Crear y activar entorno virtual de Python
+RUN python3 -m venv /venv
+ENV PATH="/venv/bin:$PATH"
 
-# Instala Composer
+# Instalar yt-dlp dentro del entorno virtual
+RUN pip install --upgrade pip && pip install yt-dlp
+
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Establece directorio de trabajo
+# Directorio de trabajo
 WORKDIR /var/www
 
-# Copia archivos del proyecto
+# Copiar archivos del proyecto
 COPY . .
 
-# Instala dependencias de Laravel
+# Instalar dependencias PHP
 RUN composer install
 
-# Expone puerto para Laravel (si usas `php artisan serve`)
+# Exponer puerto de Laravel
 EXPOSE 8000
 
-# Comando de inicio
+# Comando para iniciar Laravel
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
