@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Instala yt-dlp
-RUN pip3 install yt-dlp
+RUN pip install yt-dlp
 
 # Copia el código
 WORKDIR /var/www
