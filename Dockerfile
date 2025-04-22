@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala yt-dlp
-RUN pip3 install yt-dlp
+RUN pip install yt-dlp
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
