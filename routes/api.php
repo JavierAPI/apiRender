@@ -8,7 +8,8 @@ Route::post('/youtube/download', [DownloadController::class, 'download']);
 
 Route::get('/prueba', function(){
     return "klk bro";
-};
+});
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
